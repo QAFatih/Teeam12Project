@@ -54,17 +54,22 @@ public class fatihStepDef {
 
     @Then("Ogretmen Toplantı bilgilerini gunceller")
     public void ogretmenToplantıBilgileriniGunceller() {
+        
         //http://164.92.252.42:8080/meet/update/305
         spec.pathParams("first", "meet", "second", "update", "third", 305);
-        Response response = given(spec).put("{first}/{second}/{third}");
+
         studentid.add(574,592);
 
-        MeetPutPojo meetPutPojo=new MeetPutPojo("2023-06-02","MeetUpdate","10:30", )
+        MeetPutPojo meetPutPojo=new MeetPutPojo("2023-06-02","MeetUpdate","10:30", "10:50", studentid);
+        Response response = given(spec).body(meetPutPojo).put("{first}/{second}/{third}");
+        
+        JsonPath actualData = response.jsonPath();
 
-
-
-
-
+        assertEquals(meetPutPojo.getDate(), actualData.getString("object.date"));
+        assertEquals(meetPutPojo.getStartTime(), actualData.getString("object.startTime"));
+        assertEquals(meetPutPojo.getStopTime(), actualData.getString("object.stopTime"));
+        assertEquals(meetPutPojo.getDescription(), actualData.getString("object.description"));
+       
 
 
 //        {
